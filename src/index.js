@@ -6,7 +6,7 @@ const morgan = require('morgan');
 
 // Importar los archivos de los enrutadores
 const authRoutes = require('./routes/auth.routes');
-
+const turnoRoutes = require('./routes/turno.routes');
 
 
 
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // RUTAS
 app.use('/api/auth', authRoutes);
-
+app.use('/api/turnos', turnoRoutes);
 
 // PUERTO
 const port = process.env.PORT || 3000;
