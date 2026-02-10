@@ -48,10 +48,7 @@ exports.register = async (req, res) => {
         res.status(500).json({ msg: 'Hubo un error en el servidor al intentar registrarse' });
     }
 };
-// Login
-// @desc    Iniciar sesión y obtener token
-// @route   POST /api/auth/login
-// @access  Public
+
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
