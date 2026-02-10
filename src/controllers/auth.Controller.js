@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
@@ -47,3 +48,62 @@ exports.register = async (req, res) => {
         res.status(500).json({ msg: 'Hubo un error en el servidor al intentar registrarse' });
     }
 };
+
+exports.login = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // 1. Verificar si el usuario existe
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(400).json({ msg: 'Credenciales inválidas (Email no encontrado)' });
+        }
+
+        // 2. Verificar la contraseña
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Credenciales inválidas (Contraseña incorrecta)' });
+        }
+
+        // 3. Verificar si está ACTIVO
+        if (user.estado !== 'activo') {
+            return res.status(403).json({ 
+                msg: `Acceso denegado. Tu cuenta está en estado: '${user.estado}'. Espera a que un administrador te apruebe.` 
+            });
+        }
+
+        // 4. Crear el Token (JWT)
+        // Este "carnet" digital llevará el ID y el ROL del usuario
+        const payload = {
+            user: {
+                id: user._id,
+                rol: user.rol // Importante para saber si es admin, medico o paciente
+            }
+        };
+
+        // Firmar el token (expira en 1 día)
+        jwt.sign(
+            payload,
+            process.env.JWT_SECRET, 
+            { expiresIn: '1d' },
+            (err, token) => {
+                if (err) throw err;
+                // Devolvemos el token y los datos del usuario
+                res.json({ 
+                    token,
+                    user: {
+                        id: user._id,
+                        nombre: user.nombre,
+                        email: user.email,
+                        rol: user.rol
+                    }
+                });
+            }
+        );
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error en el servidor al iniciar sesión' });
+    }
+};
+
