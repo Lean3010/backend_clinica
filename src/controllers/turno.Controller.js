@@ -1,7 +1,7 @@
 const Turno = require('../models/turno');
 const User = require('../models/User');
 
-exports.crearTurno = async (req, res) => {
+const crearTurno = async (req, res) => {
     try {
         const { medicoId, fecha, motivo } = req.body;
 
@@ -27,7 +27,7 @@ exports.crearTurno = async (req, res) => {
 };
 
 
-exports.obtenerTurnos = async (req, res) => {
+const obtenerTurnos = async (req, res) => {
     try {
         let turnos;
 
@@ -52,7 +52,7 @@ exports.obtenerTurnos = async (req, res) => {
     }
 };
 
-exports.cancelarTurno = async (req, res) => {
+const cancelarTurno = async (req, res) => {
     try {
         // 1. Buscar el turno por ID (que viene en la URL)
         const turno = await Turno.findById(req.params.id);
@@ -95,4 +95,9 @@ exports.cancelarTurno = async (req, res) => {
         console.error(error);
         res.status(500).send('Error al cancelar el turno');
     }
+};
+module.exports = {
+    crearTurno,
+    obtenerTurnos,
+    cancelarTurno
 };
