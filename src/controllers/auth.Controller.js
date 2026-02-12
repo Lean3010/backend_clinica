@@ -2,7 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.register = async (req, res) => {
+const register = async (req, res) => {
     try {
         // 1. Extraer datos del body (lo que envía el frontend)
         const { nombre, email, password, rol, telefono, especialidad } = req.body;
@@ -49,7 +49,7 @@ exports.register = async (req, res) => {
     }
 };
 
-exports.login = async (req, res) => {
+const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -106,4 +106,7 @@ exports.login = async (req, res) => {
         res.status(500).json({ msg: 'Error en el servidor al iniciar sesión' });
     }
 };
-
+module.exports = {
+    register,
+    login
+};

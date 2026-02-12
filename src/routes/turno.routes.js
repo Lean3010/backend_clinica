@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const turnoController = require('../controllers/turnoController');
-const auth = require('../middlewares/auth'); // Importamos el guardián
+const { verifyAdmin} = require('../middlewares/auth'); // Importamos el guardián
+const { crearTurno, obtenerTurnos, cancelarTurno } = require('../controllers/turno.Controller');
 
 // Todas estas rutas están protegidas (necesitas estar logueado)
-router.post('/', auth, turnoController.crearTurno);
-router.get('/', auth, turnoController.obtenerTurnos);
-router.put('/:id/cancelar', auth, turnoController.cancelarTurno);
+router.post('/', verifyAdmin, crearTurno);
+router.get('/', verifyAdmin, obtenerTurnos);
+router.put('/:id/cancelar', verifyAdmin, cancelarTurno);
 module.exports = router;
