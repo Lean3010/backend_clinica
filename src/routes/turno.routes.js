@@ -11,4 +11,5 @@ const {
 router.post("/", verifyAuth, verificarRol("paciente"), crearTurno);
 router.get("/", verifyAuth, verificarRol("paciente", "medico"), obtenerTurnos);
 router.put("/:id", verifyAuth, verificarRol("medico"), cancelarTurno);
+
 module.exports = router;
