@@ -73,25 +73,7 @@ const cancelarTurno = async (req, res) => {
     turno.estado = "cancelado";
     await turno.save();
 
-    // 4. BONUS: Enviar notificación por email
-    // Buscamos los datos del paciente y médico para avisarles
-    const paciente = await User.findById(turno.paciente);
-
-    // Mensaje del correo
-    const mensaje = `Hola ${paciente.nombre}, tu turno para el ${turno.fecha} ha sido CANCELADO.`;
-
-    try {
-      await sendEmail({
-        email: paciente.email,
-        subject: "Actualización de Turno - Web Clínica",
-        message: mensaje,
-      });
-    } catch (emailError) {
-      console.error("Error enviando email:", emailError);
-      // No detenemos la respuesta si falla el email, pero lo registramos
-    }
-
-    res.json({ msg: "Turno cancelado y notificación enviada", turno });
+    res.json({ msg: "Turno cancelado.", turno });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al cancelar el turno");
