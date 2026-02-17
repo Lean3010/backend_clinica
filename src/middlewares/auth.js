@@ -49,15 +49,7 @@ const verificarRol = (...roles) => {
         message: "No autenticado",
       });
     }
-  }
-  
-// verificar si el usuario es admin
-const verifyAdmin=(req, res, next)=>{
-    if(req.user.role !== process.env.ADMIN_ROLE){
-        return res.status(403).json({
-            ok: false,
-            message:'Acceso denegado. Solo los administradores pueden acceder a esta ruta'
-        })
+
     if (!roles.includes(req.user.rol)) {
       return res.status(403).json({
         ok: false,
@@ -66,30 +58,10 @@ const verifyAdmin=(req, res, next)=>{
     }
 
     next();
-}
-
-// verificar si el ususario es superAdmin
-
-const verifySuperAdmin=(req, res, next)=>{
-    if(req.user.role !==process.env.SUPER_ADMIN_ROLE){
-        return res.status(403).JSON({
-            ok:false,
-            message:'acceso denagado, se reuqiee permisos de super admin'
-            
-        })
-    }
-    next();
-
-}
   };
 };
 
 // exportamos la funcion de verificacion de autenticacion
-module.exports={
-    verifyAuth,
-    verifyAdmin,
-    verifySuperAdmin,
-}
 module.exports = {
   verifyAuth,
   verificarRol,
