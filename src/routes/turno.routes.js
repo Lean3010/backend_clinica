@@ -6,5 +6,5 @@ const { crearTurno, obtenerTurnos, cancelarTurno } = require('../controllers/tur
 // Todas estas rutas están protegidas (necesitas estar logueado)
 router.post('/', verifyAdmin, crearTurno);
 router.get('/', verifyAdmin, obtenerTurnos);
-router.put('/:id/cancelar', verifyAdmin, cancelarTurno);
+router.put('/:id', verifyAdmin, cancelarTurno);
 module.exports = router;
