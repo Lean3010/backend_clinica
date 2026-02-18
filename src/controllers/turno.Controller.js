@@ -1,4 +1,4 @@
-const Turno = require("../models/turno");
+const Turno = require("../models/Turno");
 const User = require("../models/User");
 
 const crearTurno = async (req, res) => {
