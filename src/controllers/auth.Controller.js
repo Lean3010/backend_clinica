@@ -89,27 +89,24 @@ const login = async (req, res) => {
     };
 
     // Firmar el token (expira en 1 día)
-    jwt.sign(
-      payload,
-      process.env.JWT_SECRET,
-      { expiresIn: "1d" },
-      (err, token) => {
-        if (err) throw err;
-        // Devolvemos el token y los datos del usuario
-        res.json({
-          token,
-          user: {
-            id: user._id,
-            nombre: user.nombre,
-            email: user.email,
-            rol: user.rol,
-          },
-        });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
+
+    return res.json({
+      token,
+      user: {
+        id: user._id,
+        nombre: user.nombre,
+        email: user.email,
+        rol: user.rol,
       },
-    );
+    });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ msg: "Error en el servidor al iniciar sesión" });
+    res
+      .status(500)
+      .json({ msg: "Error en el servidor al iniciar sesión", error });
   }
 };
 module.exports = {
