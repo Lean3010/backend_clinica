@@ -7,7 +7,7 @@ const crearTurno = async (req, res) => {
 
     // Crear el turno usando el ID del usuario logueado (req.user.id)
     const turno = new Turno({
-      paciente: req.user.id, // Viene del middleware auth
+      paciente: req.user.id, 
       medico: medicoId,
       fecha,
       motivo,
@@ -58,8 +58,7 @@ const cancelarTurno = async (req, res) => {
       return res.status(404).json({ msg: "Turno no encontrado" });
     }
 
-    // 2. Verificar que el usuario sea el dueño del turno (Paciente o Médico asignado)
-    // Convertimos a string para poder comparar
+    
     if (
       turno.paciente.toString() !== req.user.id &&
       turno.medico.toString() !== req.user.id
@@ -73,33 +72,45 @@ const cancelarTurno = async (req, res) => {
     turno.estado = "cancelado";
     await turno.save();
 
-    // 4. BONUS: Enviar notificación por email
-    // Buscamos los datos del paciente y médico para avisarles
-    const paciente = await User.findById(turno.paciente);
-
-    // Mensaje del correo
-    const mensaje = `Hola ${paciente.nombre}, tu turno para el ${turno.fecha} ha sido CANCELADO.`;
-
-    try {
-      await sendEmail({
-        email: paciente.email,
-        subject: "Actualización de Turno - Web Clínica",
-        message: mensaje,
-      });
-    } catch (emailError) {
-      console.error("Error enviando email:", emailError);
-      // No detenemos la respuesta si falla el email, pero lo registramos
-    }
-
-    res.json({ msg: "Turno cancelado y notificación enviada", turno });
+    res.json({ msg: "Turno cancelado.", turno });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al cancelar el turno");
   }
 };
 
+// Función para que el Médico acepte el turno
+const confirmarTurno = async (req, res) => {
+    try {
+        
+        const turno = await Turno.findById(req.params.id);
+
+        
+        if (!turno) {
+            return res.status(404).json({ msg: 'Turno no encontrado' });
+        }
+
+        
+        if (turno.medico.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'No autorizado. Solo el médico asignado puede confirmar este turno.' });
+        }
+
+        
+        turno.estado = 'confirmado';
+        await turno.save();
+
+       
+        res.json({ msg: 'Turno confirmado exitosamente', turno });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ msg: 'Error al confirmar el turno' });
+    }
+};
+
 module.exports = {
   crearTurno,
   obtenerTurnos,
   cancelarTurno,
+  confirmarTurno,
 };
