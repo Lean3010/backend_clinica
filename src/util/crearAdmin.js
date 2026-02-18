@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 const crearAdmin = async () => {
     try {
@@ -12,10 +13,16 @@ const crearAdmin = async () => {
             return
          }
 
+         // password haseado
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, salt);
+
+
+
          //Crear admin
          const admin = new User({
             email: adminEmail,
-            password: process.env.ADMIN_PASSWORD,
+            password: hashedPassword,
             nombre: process.env.ADMIN_NAME,
             rol:'admin',
             estado: 'activo',

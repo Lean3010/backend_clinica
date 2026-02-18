@@ -8,10 +8,13 @@ const morgan = require('morgan');
 const authRoutes = require('./routes/auth.routes');
 const turnoRoutes = require('./routes/turno.routes');
 const userRoutes = require('./routes/user.routes');
+const crearAdmin = require('./util/crearAdmin');
 
 
 // Conectar a la base de datos
 connectDB();
+crearAdmin();
+
 
 const app = express();
 

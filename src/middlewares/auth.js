@@ -20,7 +20,7 @@ const verifyAuth = async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // verifico el token con la palabra secreta-- arroja un booleano
     const user = await User.findById(decoded.id).select("-password"); // aqui no quiero la password
 
-    // si el usuarioya no existe, validamos lo  siguiente
+    // si el usuario ya no existe, validamos lo  siguiente
     if (!user) {
       return res.status(401).json({
         ok: false,
