@@ -9,6 +9,7 @@ const obtenerMedicos = async (req, res) => {
         res.status(500).json({ msg: 'Hubo un error al obtener los médicos' });
     }
 };
+
 module.exports = {
   obtenerMedicos,
 };
