@@ -42,7 +42,7 @@ const obtenerTurnos = async (req, res) => {
         .sort({ fecha: 1 });
     }
 
-    res.json(turnos);
+    res.json({ turnos });
   } catch (error) {
     console.error(error);
     res.status(500).send("Error al obtener los turnos");
