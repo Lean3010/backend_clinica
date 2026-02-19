@@ -3,10 +3,10 @@ const User = require("../models/User");
 const obtenerMedicos = async (req, res) => {
   try {
     const medicos = await User.find({ rol: "medico" }).select(
-      "nombre especialidad email estado rol",
+      "nombre especialidad email estado rol telefono",
     );
 
-    res.json(medicos);
+    res.json({medicos});
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Hubo un error al obtener los médicos" });
