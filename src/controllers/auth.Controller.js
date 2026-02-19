@@ -83,7 +83,9 @@ const login = async (req, res) => {
     // Este "carnet" digital llevará el ID y el ROL del usuario
     const payload = {
       user: {
-        id: user._id,
+        id: user._id || user.id,
+        nombre: user.nombre,
+        email: user.email,
         rol: user.rol, // Importante para saber si es admin, medico o paciente
       },
     };
@@ -96,7 +98,7 @@ const login = async (req, res) => {
     return res.json({
       token,
       user: {
-        id: user._id,
+        id: user._id || user.id,
         nombre: user.nombre,
         email: user.email,
         rol: user.rol,
