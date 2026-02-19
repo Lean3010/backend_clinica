@@ -3,7 +3,7 @@ const User = require("../models/User");
 const obtenerMedicos = async (req, res) => {
   try {
     const medicos = await User.find({ rol: "medico" }).select(
-      "nombre especialidad email",
+      "nombre especialidad email estado rol",
     );
 
     res.json(medicos);
