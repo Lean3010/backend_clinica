@@ -3,11 +3,9 @@ const User = require("../models/User");
 const obtenerMedicos = async (req, res) => {
   try {
     const medicos = await User.find({ rol: "medico" }).select(
-      "nombre",
-      "especialidad",
-      "email",
-      "id",
+      "nombre especialidad email",
     );
+
     res.json(medicos);
   } catch (error) {
     console.error(error);
@@ -23,7 +21,6 @@ const aceptarMedico = async (req, res) => {
       return res.status(404).json({ msg: "Doctor/a no encontrado" });
     }
 
-
     medico.estado = "activo";
     await medico.save();
 
@@ -36,5 +33,5 @@ const aceptarMedico = async (req, res) => {
 
 module.exports = {
   obtenerMedicos,
-  aceptarMedico
+  aceptarMedico,
 };
