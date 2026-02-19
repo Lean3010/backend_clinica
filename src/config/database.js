@@ -4,7 +4,7 @@ const crearAdmin = require("../util/crearAdmin");
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("MongoDB Conectado Exitosamente");
     await crearAdmin();
   } catch (error) {
