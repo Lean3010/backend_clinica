@@ -6,7 +6,7 @@ const {
 } = require("../controllers/user.Controller");
 const { verifyAuth, verificarRol } = require("../middlewares/auth");
 
-router.get("/medicos", verifyAuth, verificarRol("admin"), obtenerMedicos);
+router.get("/medicos", verifyAuth, verificarRol("admin","paciente"), obtenerMedicos);
 router.put(
   "/medico/:id/aceptar",
   verifyAuth,
