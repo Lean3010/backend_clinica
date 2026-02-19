@@ -1,6 +1,6 @@
 // Conexion a la base de datos
 const mongoose = require("mongoose");
-const crearAdmin = require("./utils/crearAdmin");
+const crearAdmin = require("../util/crearAdmin");
 
 const connectDB = async () => {
   try {

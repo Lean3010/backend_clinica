@@ -103,10 +103,12 @@ const login = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .json({ msg: "Error en el servidor al iniciar sesión", error });
+    console.error("ERROR LOGIN:", error.message);
+    console.error(error.stack);
+    res.status(500).json({
+      msg: "Error en el servidor al iniciar sesión",
+      error: error.message,
+    });
   }
 };
 module.exports = {
